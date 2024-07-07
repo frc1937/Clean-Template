@@ -3,11 +3,7 @@ package frc.lib.generic.motor;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.REVLibError;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.SparkRelativeEncoder;
+import com.revrobotics.*;
 import frc.lib.generic.Feedforward;
 import frc.lib.generic.Properties;
 import org.littletonrobotics.junction.Logger;
@@ -51,9 +47,6 @@ public class GenericSpark extends CANSparkBase implements Motor {
 
             case VOLTAGE -> controller.setReference(output, ControlType.kVoltage, slotToUse);
             case CURRENT -> controller.setReference(output, ControlType.kCurrent, slotToUse);
-
-            case PROFILED_POSITION, PROFILED_VELOCITY ->
-                    throw new UnsupportedOperationException("Use normal VOLTAGE control and create the profile outside the motor.");
         }
     }
 
@@ -177,10 +170,20 @@ public class GenericSpark extends CANSparkBase implements Motor {
         if (configuration.statorCurrentLimit != -1) super.setSmartCurrentLimit((int) configuration.statorCurrentLimit);
         if (configuration.supplyCurrentLimit != -1) super.setSmartCurrentLimit((int) configuration.supplyCurrentLimit);
 
+        configureProfile(configuration);
+
         configurePID(configuration);
         configureFeedForward(configuration);
 
         return super.burnFlash() == REVLibError.kOk;
+    }
+
+    private void configureProfile(MotorConfiguration configuration) {
+        controller.setSmartMotionMaxVelocity(configuration.profiledMaxVelocity, slotToUse);
+        controller.setSmartMotionMaxAccel(configuration.profiledTargetAcceleration, slotToUse);
+
+//        controller.setSmartMotionAllowedClosedLoopError(configuration.closedLoopError, slotToUse);//todo: Might be needed. do test.
+        controller.setSmartMotionAccelStrategy(SparkPIDController.AccelStrategy.kTrapezoidal, slotToUse); //todo: add a way to edit this. only if needed tho. meh
     }
 
     private void configureFeedForward(MotorConfiguration configuration) {
