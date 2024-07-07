@@ -1,4 +1,4 @@
-package frc.robot.subsystems.kicker.real;
+package frc.robot.subsystems.kicker;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.lib.generic.motor.GenericTalonSRX;
@@ -6,7 +6,7 @@ import frc.lib.generic.motor.Motor;
 import frc.lib.generic.motor.MotorConfiguration;
 import frc.lib.generic.motor.MotorProperties;
 
-public class RealKickerConstants {
+public class KickerConstants {
     public static final DigitalInput BEAM_BREAKER = new DigitalInput(0);
     public static final Motor MOTOR = new GenericTalonSRX(8);
 
