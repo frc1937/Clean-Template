@@ -3,7 +3,7 @@ package frc.robot.subsystems.kicker;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.generic.motor.MotorProperties;
+import frc.lib.generic.hardware.motor.MotorProperties;
 
 import static frc.robot.subsystems.kicker.KickerConstants.BEAM_BREAKER;
 import static frc.robot.subsystems.kicker.KickerConstants.MOTOR;
@@ -19,7 +19,7 @@ public class Kicker extends SubsystemBase {
     }
 
     public boolean doesSeeObject() {
-        return !BEAM_BREAKER.get();
+        return BEAM_BREAKER.get() == 1;
     }
 
     private void setPercentageOutput(double percentageOutput) {

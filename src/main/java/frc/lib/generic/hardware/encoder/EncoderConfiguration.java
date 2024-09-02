@@ -1,4 +1,4 @@
-package frc.lib.generic.encoder;
+package frc.lib.generic.hardware.encoder;
 
 public class EncoderConfiguration { 
     /** The offset to zero the cancoder, in rotations <p> This gets added to all reported encoder positions </p> */
